@@ -1,94 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Video Chat</title>
-
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-body{
-  background:black;
-  overflow:hidden;
-  font-family:Arial;
-}
-
-.videos{
-  position:relative;
-  width:100vw;
-  height:100vh;
-}
-
-#remoteVideo{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  background:black;
-}
-
-#localVideo{
-  position:absolute;
-  width:240px;
-  height:180px;
-  top:20px;
-  right:20px;
-  object-fit:cover;
-  border-radius:12px;
-  border:2px solid white;
-  background:black;
-}
-
-.chatBar{
-  position:absolute;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  display:flex;
-  gap:10px;
-}
-
-.chatBar input{
-  flex:1;
-  padding:16px;
-  border:none;
-  border-radius:999px;
-  background:rgba(255,255,255,.15);
-  color:white;
-  outline:none;
-  backdrop-filter:blur(10px);
-}
-
-.chatBar button{
-  border:none;
-  padding:16px 20px;
-  border-radius:999px;
-  background:rgba(255,255,255,.2);
-  color:white;
-  cursor:pointer;
-}
-</style>
-</head>
-<body>
-
-<div class="videos">
-  <video id="remoteVideo" autoplay playsinline></video>
-  <video id="localVideo" autoplay muted playsinline></video>
-
-  <div class="chatBar">
-    <input id="messageInput" placeholder="Mensaje...">
-    <button id="sendBtn">Enviar</button>
-    <button id="nextBtn">Next</button>
-  </div>
-</div>
-
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
 <script>
 const socket = io("https://localhost:3000");
 
@@ -107,17 +16,21 @@ const config = {
 };
 
 async function start(){
+
   localStream = await navigator.mediaDevices.getUserMedia({
     video:true,
     audio:true
   });
 
   localVideo.srcObject = localStream;
+}
 
+function findPartner(){
   socket.emit("find");
 }
 
 function createPeer(){
+
   peer = new RTCPeerConnection(config);
 
   localStream.getTracks().forEach(track=>{
@@ -129,7 +42,9 @@ function createPeer(){
   };
 
   peer.onicecandidate = e=>{
+
     if(e.candidate){
+
       socket.emit("signal",{
         candidate:e.candidate
       });
@@ -137,10 +52,17 @@ function createPeer(){
   };
 }
 
+socket.on("connect", ()=>{
+
+  findPartner();
+});
+
 socket.on("match", async initiator=>{
+
   createPeer();
 
   if(initiator){
+
     const offer = await peer.createOffer();
 
     await peer.setLocalDescription(offer);
@@ -170,8 +92,22 @@ socket.on("signal", async data=>{
   }
 
   if(data.candidate){
+
     await peer.addIceCandidate(data.candidate);
   }
+});
+
+socket.on("left", ()=>{
+
+  remoteVideo.srcObject = null;
+
+  if(peer){
+    peer.close();
+  }
+
+  setTimeout(()=>{
+    findPartner();
+  },1000);
 });
 
 document.getElementById("nextBtn").onclick = ()=>{
@@ -183,10 +119,11 @@ document.getElementById("nextBtn").onclick = ()=>{
   remoteVideo.srcObject = null;
 
   socket.emit("next");
+
+  setTimeout(()=>{
+    findPartner();
+  },500);
 };
 
 start();
 </script>
-
-</body>
-</html>
