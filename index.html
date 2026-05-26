@@ -1,905 +1,191 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nuestra Cita 🌻💖</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>Video Chat</title>
 
 <style>
-
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
-    min-height:100vh;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#fff6d6,#ffe4ef,#fff8fb);
-    position:relative;
+  background:black;
+  overflow:hidden;
+  font-family:Arial;
 }
 
-/* ================= FLOTANTES ================= */
-
-.float-item{
-    position:absolute;
-    pointer-events:none;
-    animation:floatUp linear forwards;
-    opacity:0;
+.videos{
+  position:relative;
+  width:100vw;
+  height:100vh;
 }
 
-@keyframes floatUp{
-
-    0%{
-        transform:translateY(100vh) rotate(0deg) scale(0.6);
-        opacity:0;
-    }
-
-    15%{
-        opacity:1;
-    }
-
-    100%{
-        transform:translateY(-120vh) rotate(360deg) scale(1.2);
-        opacity:0;
-    }
+#remoteVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:black;
 }
 
-/* ================= CARD ================= */
-
-.container{
-
-    width:92%;
-    max-width:550px;
-
-    background:rgba(255,255,255,0.85);
-
-    backdrop-filter:blur(14px);
-
-    border-radius:35px;
-
-    padding:35px;
-
-    text-align:center;
-
-    box-shadow:0 15px 40px rgba(255,182,193,0.35);
-
-    position:relative;
-
-    z-index:10;
-
-    overflow:hidden;
-
-    animation:fadeIn 1s ease;
+#localVideo{
+  position:absolute;
+  width:240px;
+  height:180px;
+  top:20px;
+  right:20px;
+  object-fit:cover;
+  border-radius:12px;
+  border:2px solid white;
+  background:black;
 }
 
-@keyframes fadeIn{
-
-    from{
-        opacity:0;
-        transform:translateY(30px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.chatBar{
+  position:absolute;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  width:90%;
+  display:flex;
+  gap:10px;
 }
 
-.cat{
-
-    width:170px;
-
-    border-radius:25px;
-
-    margin-bottom:20px;
-
-    box-shadow:0 8px 18px rgba(0,0,0,0.15);
+.chatBar input{
+  flex:1;
+  padding:16px;
+  border:none;
+  border-radius:999px;
+  background:rgba(255,255,255,.15);
+  color:white;
+  outline:none;
+  backdrop-filter:blur(10px);
 }
 
-h1{
-
-    color:#d63384;
-
-    font-size:31px;
-
-    margin-bottom:25px;
-
-    line-height:1.4;
+.chatBar button{
+  border:none;
+  padding:16px 20px;
+  border-radius:999px;
+  background:rgba(255,255,255,.2);
+  color:white;
+  cursor:pointer;
 }
-
-h2{
-
-    color:#ff4d9d;
-
-    margin-bottom:18px;
-}
-
-/* ================= PASOS ================= */
-
-.step{
-    display:none;
-    animation:fadeStep 0.6s ease;
-}
-
-.step.active{
-    display:block;
-}
-
-@keyframes fadeStep{
-
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-/* ================= BOTONES ================= */
-
-.buttons{
-
-    position:relative;
-
-    width:100%;
-
-    height:180px;
-
-    margin-top:15px;
-}
-
-button{
-
-    border:none;
-
-    padding:15px 28px;
-
-    border-radius:40px;
-
-    cursor:pointer;
-
-    font-size:17px;
-
-    font-weight:600;
-
-    transition:0.25s;
-}
-
-#yesBtn{
-
-    background:#ff4d9d;
-
-    color:white;
-
-    box-shadow:0 10px 20px rgba(255,77,157,0.35);
-}
-
-#yesBtn:hover{
-    transform:scale(1.07);
-}
-
-#noBtn{
-
-    position:absolute;
-
-    top:0;
-
-    left:65%;
-
-    background:#b983ff;
-
-    color:white;
-}
-
-.nextBtn,
-#confirmBtn{
-
-    width:100%;
-
-    margin-top:22px;
-
-    background:#ff4d9d;
-
-    color:white;
-}
-
-.nextBtn:hover,
-#confirmBtn:hover{
-    transform:scale(1.02);
-}
-
-/* ================= INPUTS ================= */
-
-input,
-select{
-
-    width:100%;
-
-    margin-top:14px;
-
-    padding:14px;
-
-    border-radius:18px;
-
-    border:2px solid #ffd0e6;
-
-    outline:none;
-
-    font-size:16px;
-
-    transition:0.3s;
-}
-
-input:focus,
-select:focus{
-
-    border-color:#ff69b4;
-
-    box-shadow:0 0 10px rgba(255,105,180,0.25);
-}
-
-/* ================= MENSAJE FINAL ================= */
-
-#finalMessage{
-
-    margin-top:25px;
-
-    background:#fff0f7;
-
-    padding:24px;
-
-    border-radius:24px;
-
-    color:#d63384;
-
-    font-size:20px;
-
-    line-height:1.8;
-
-    font-weight:600;
-
-    animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.02);
-    }
-
-    100%{
-        transform:scale(1);
-    }
-}
-
-#countdown{
-
-    margin-top:20px;
-
-    color:#ff4d9d;
-
-    line-height:1.6;
-
-    font-weight:600;
-}
-
-#loveLetter{
-
-    margin-top:20px;
-
-    background:#fffaf0;
-
-    border:2px dashed #f7c948;
-
-    border-radius:22px;
-
-    padding:22px;
-
-    color:#c2185b;
-
-    line-height:1.8;
-}
-
-#calendarContainer button{
-
-    width:100%;
-
-    margin-top:18px;
-
-    background:#8b5cf6;
-
-    color:white;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:600px){
-
-    .container{
-        padding:240px;
-    }
-
-    h1{
-        font-size:250px;
-    }
-
-    .cat{
-        width:145px;
-    }
-
-    button{
-        font-size:150px;
-    }
-}
-
 </style>
 </head>
-
 <body>
 
-<audio id="music" loop>
-    <source src="C:\Users\waner\OneDrive\Escritorio\cel">
-</audio>
+<div class="videos">
+  <video id="remoteVideo" autoplay playsinline></video>
+  <video id="localVideo" autoplay muted playsinline></video>
 
-<div id="floatingContainer"></div>
-
-<div class="container">
-
-    <img
-        class="cat"
-        src="C:\Users\waner\OneDrive\Escritorio"
-    >
-
-    <!-- ================= PREGUNTA ================= -->
-
-    <div class="step active" id="step1">
-
-        <h1>
-            🌻 ¿Quieres tener una cita conmigo? 💖
-        </h1>
-
-        <div class="buttons">
-
-            <button id="yesBtn">
-                Sí 💕
-            </button>
-
-            <button id="noBtn">
-                No 😢
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- ================= NOMBRES ================= -->
-
-    <div class="step" id="step2">
-
-        <h2>
-            🌸 ¿Quiénes tendrán la cita?
-        </h2>
-
-        <input
-            type="text"
-            id="person1"
-            placeholder="Tu nombre 💖"
-        >
-
-        <input
-            type="text"
-            id="person2"
-            placeholder="Su nombre 🌻"
-        >
-
-        <button class="nextBtn" id="toStep3">
-            Continuar ✨
-        </button>
-
-    </div>
-
-    <!-- ================= ACTIVIDAD ================= -->
-
-    <div class="step" id="step3">
-
-        <h2>
-            💕 Escoge la cita perfecta
-        </h2>
-
-        <select id="activity">
-
-            <option value="">
-                Selecciona una opción
-            </option>
-
-            <option>🍕 Pizza</option>
-            <option>🌮 Tacos</option>
-            <option>🍔 Hamburguesas</option>
-            <option>🍦 Helado</option>
-            <option>🎬 Cine</option>
-            <option>☕ Cafecito</option>
-            <option>🌅 Ver el atardecer</option>
-            <option>🎡 Parque de diversiones</option>
-            <option>🛍️ Ir de compras</option>
-            <option>🌻 Picnic con girasoles</option>
-
-        </select>
-
-        <button class="nextBtn" id="toStep4">
-            Siguiente 💌
-        </button>
-
-    </div>
-
-    <!-- ================= FECHA ================= -->
-
-    <div class="step" id="step4">
-
-        <h2>
-            📅 Escoge el día especial
-        </h2>
-
-        <input type="date" id="date">
-
-        <input type="time" id="time">
-
-        <button id="confirmBtn">
-            Confirmar cita 💖
-        </button>
-
-    </div>
-
-    <!-- ================= RESULTADO ================= -->
-
-    <div class="step" id="step5">
-
-        <div id="finalMessage"></div>
-
-        <div id="calendarContainer"></div>
-
-        <div id="countdown"></div>
-
-        <div id="loveLetter"></div>
-
-    </div>
-
+  <div class="chatBar">
+    <input id="messageInput" placeholder="Mensaje...">
+    <button id="sendBtn">Enviar</button>
+    <button id="nextBtn">Next</button>
+  </div>
 </div>
 
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
 <script>
+const socket = io("https://localhost:3000");
 
-/* ================= ELEMENTOS FLOTANTES ================= */
+const localVideo = document.getElementById("localVideo");
+const remoteVideo = document.getElementById("remoteVideo");
 
-const floatingContainer =
-    document.getElementById("floatingContainer");
+let localStream;
+let peer;
 
-function createFloatingItem(){
+const config = {
+  iceServers:[
+    {
+      urls:"stun:stun.l.google.com:19302"
+    }
+  ]
+};
 
-    const item =
-        document.createElement("div");
+async function start(){
+  localStream = await navigator.mediaDevices.getUserMedia({
+    video:true,
+    audio:true
+  });
 
-    item.classList.add("float-item");
+  localVideo.srcObject = localStream;
 
-    const elements = [
-        "💖",
-        "🌻",
-        "✨",
-        "💕",
-        "🌸"
-    ];
-
-    item.innerHTML =
-        elements[Math.floor(Math.random()*elements.length)];
-
-    item.style.left =
-        Math.random()*100 + "vw";
-
-    item.style.fontSize =
-        (Math.random()*22 + 16) + "px";
-
-    item.style.animationDuration =
-        (Math.random()*5 + 6) + "s";
-
-    floatingContainer.appendChild(item);
-
-    setTimeout(()=>{
-
-        item.remove();
-
-    },11000);
+  socket.emit("find");
 }
 
-setInterval(createFloatingItem,350);
+function createPeer(){
+  peer = new RTCPeerConnection(config);
 
-/* ================= PASOS ================= */
+  localStream.getTracks().forEach(track=>{
+    peer.addTrack(track, localStream);
+  });
 
-function showStep(stepId){
+  peer.ontrack = e=>{
+    remoteVideo.srcObject = e.streams[0];
+  };
 
-    document.querySelectorAll(".step")
-        .forEach(step=>{
-
-            step.classList.remove("active");
-        });
-
-    document.getElementById(stepId)
-        .classList.add("active");
+  peer.onicecandidate = e=>{
+    if(e.candidate){
+      socket.emit("signal",{
+        candidate:e.candidate
+      });
+    }
+  };
 }
 
-/* ================= BOTÓN NO ================= */
+socket.on("match", async initiator=>{
+  createPeer();
 
-const noBtn =
-    document.getElementById("noBtn");
+  if(initiator){
+    const offer = await peer.createOffer();
 
-const yesBtn =
-    document.getElementById("yesBtn");
+    await peer.setLocalDescription(offer);
 
-let yesScale = 1;
-
-noBtn.addEventListener("mouseenter",()=>{
-
-    const container =
-        document.querySelector(".buttons");
-
-    const maxX =
-        container.clientWidth
-        - noBtn.offsetWidth
-        - 15;
-
-    const maxY =
-        container.clientHeight
-        - noBtn.offsetHeight
-        - 15;
-
-    const randomX =
-        Math.max(10,
-            Math.floor(Math.random()*maxX)
-        );
-
-    const randomY =
-        Math.max(10,
-            Math.floor(Math.random()*maxY)
-        );
-
-    noBtn.style.left =
-        randomX + "px";
-
-    noBtn.style.top =
-        randomY + "px";
-
-    yesScale += 0.08;
-
-    yesBtn.style.transform =
-        `scale(${yesScale})`;
+    socket.emit("signal",{
+      sdp:peer.localDescription
+    });
+  }
 });
 
-/* ================= BOTÓN SÍ ================= */
+socket.on("signal", async data=>{
 
-yesBtn.addEventListener("click",()=>{
+  if(data.sdp){
 
-    showStep("step2");
+    await peer.setRemoteDescription(data.sdp);
 
-    createCelebration();
+    if(data.sdp.type === "offer"){
 
-    const music =
-        document.getElementById("music");
+      const answer = await peer.createAnswer();
 
-    music.volume = 0.35;
+      await peer.setLocalDescription(answer);
 
-    music.play().catch(()=>{});
+      socket.emit("signal",{
+        sdp:peer.localDescription
+      });
+    }
+  }
+
+  if(data.candidate){
+    await peer.addIceCandidate(data.candidate);
+  }
 });
 
-/* ================= CONTINUAR ================= */
+document.getElementById("nextBtn").onclick = ()=>{
 
-const toStep3 =
-    document.getElementById("toStep3");
+  if(peer){
+    peer.close();
+  }
 
-const toStep4 =
-    document.getElementById("toStep4");
+  remoteVideo.srcObject = null;
 
-toStep3.addEventListener("click",()=>{
+  socket.emit("next");
+};
 
-    const person1 =
-        document.getElementById("person1").value;
-
-    const person2 =
-        document.getElementById("person2").value;
-
-    if(person1 === "" || person2 === ""){
-
-        alert("Completa ambos nombres 💕");
-
-        return;
-    }
-
-    showStep("step3");
-});
-
-toStep4.addEventListener("click",()=>{
-
-    const activity =
-        document.getElementById("activity").value;
-
-    if(activity === ""){
-
-        alert("Escoge una actividad 🌻");
-
-        return;
-    }
-
-    showStep("step4");
-});
-
-/* ================= CONFIRMAR ================= */
-
-let countdownInterval;
-
-const confirmBtn =
-    document.getElementById("confirmBtn");
-
-confirmBtn.addEventListener("click",()=>{
-
-    const person1 =
-        document.getElementById("person1").value;
-
-    const person2 =
-        document.getElementById("person2").value;
-
-    const activity =
-        document.getElementById("activity").value;
-
-    const date =
-        document.getElementById("date").value;
-
-    const time =
-        document.getElementById("time").value;
-
-    if(date === "" || time === ""){
-
-        alert("Selecciona fecha y hora 💖");
-
-        return;
-    }
-
-    showStep("step5");
-
-    const formattedDate =
-        new Date(date).toLocaleDateString(
-            "es-ES",
-            {
-                weekday:"long",
-                day:"numeric",
-                month:"long",
-                year:"numeric"
-            }
-        );
-
-    document.getElementById("finalMessage")
-        .innerHTML = `
-
-        🌻 CITA CONFIRMADA 💖 <br><br>
-
-        ${person1} + ${person2} 💕<br><br>
-
-        📍 ${activity}<br>
-        📅 ${formattedDate}<br>
-        ⏰ ${time}<br><br>
-
-        Ya quiero que llegue ese momento ✨
-    `;
-
-    startCountdown(date,time);
-
-    createCalendarButton(activity,date,time);
-
-    createLetter(person1,person2,activity);
-
-    createCelebration();
-});
-
-/* ================= CELEBRACIÓN ================= */
-
-function createCelebration(){
-
-    for(let i=0;i<60;i++){
-
-        const piece =
-            document.createElement("div");
-
-        piece.innerHTML =
-            ["💖","🌻","✨","🌸"][Math.floor(Math.random()*4)];
-
-        piece.style.position =
-            "absolute";
-
-        piece.style.left =
-            Math.random()*100 + "vw";
-
-        piece.style.top =
-            "-20px";
-
-        piece.style.fontSize =
-            (Math.random()*22 + 18) + "px";
-
-        piece.style.transition =
-            "4s linear";
-
-        piece.style.zIndex =
-            "999";
-
-        document.body.appendChild(piece);
-
-        setTimeout(()=>{
-
-            piece.style.transform =
-                `translateY(${window.innerHeight+100}px) rotate(720deg)`;
-
-            piece.style.opacity =
-                "0";
-
-        },50);
-
-        setTimeout(()=>{
-
-            piece.remove();
-
-        },4200);
-    }
-}
-
-/* ================= COUNTDOWN ================= */
-
-function startCountdown(date,time){
-
-    clearInterval(countdownInterval);
-
-    const countdown =
-        document.getElementById("countdown");
-
-    const target =
-        new Date(`${date}T${time}`);
-
-    countdownInterval = setInterval(()=>{
-
-        const now =
-            new Date();
-
-        const difference =
-            target - now;
-
-        if(difference <= 0){
-
-            countdown.innerHTML =
-                "💖 ¡La cita comenzó! 🌻";
-
-            clearInterval(countdownInterval);
-
-            return;
-        }
-
-        const days =
-            Math.floor(difference/(1000*60*60*24));
-
-        const hours =
-            Math.floor(
-                (difference%(1000*60*60*24))
-                /(1000*60*60)
-            );
-
-        const minutes =
-            Math.floor(
-                (difference%(1000*60*60))
-                /(1000*60)
-            );
-
-        const seconds =
-            Math.floor(
-                (difference%(1000*60))/1000
-            );
-
-        countdown.innerHTML = `
-
-            ⏳ Falta para la cita:<br><br>
-
-            ${days}d ${hours}h ${minutes}m ${seconds}s
-        `;
-
-    },1000);
-}
-
-/* ================= CALENDARIO ================= */
-
-function createCalendarButton(activity,date,time){
-
-    const startDate =
-        new Date(`${date}T${time}`);
-
-    const endDate =
-        new Date(
-            startDate.getTime()
-            + 2*60*60*1000
-        );
-
-    function formatDate(d){
-
-        return d
-            .toISOString()
-            .replace(/[-:]/g,"")
-            .split(".")[0] + "Z";
-    }
-
-    const url =
-
-        `https://calendar.google.com/calendar/render?action=TEMPLATE`
-
-        + `&text=Nuestra+Cita+🌻💕`
-
-        + `&dates=${formatDate(startDate)}/${formatDate(endDate)}`
-
-        + `&details=${encodeURIComponent(activity)}`;
-
-    document.getElementById("calendarContainer")
-        .innerHTML = `
-
-        <a href="${url}" target="_blank">
-
-            <button>
-                📅 Añadir al calendario
-            </button>
-
-        </a>
-    `;
-}
-
-/* ================= CARTA ================= */
-
-function createLetter(person1,person2,activity){
-
-    const messages = [
-
-        `🐮🐄Gracias por compartir tu vida conmigo mi pichu 🌻🐮🐄`,
-
-        `🐮🐄Cada segundo contigo será especial te juro que vamos a olvidar los 4 años sin vernos 💖🐮🐄`,
-
-        `🐮🐄Prometo muchas risas y recuerdos hermosos ✨🐮🐄`,
-
-        `🐮🐄No importa el lugar, contigo todo es mágico 🐮🐄🌸`
-    ];
-
-    const randomMessage =
-        messages[
-            Math.floor(Math.random()*messages.length)
-        ];
-
-    document.getElementById("loveLetter")
-        .innerHTML = `
-
-        💌 Carta para ustedes 💌 <br><br>
-
-        ${person1} y ${person2} 🌻💕<br><br>
-
-        ${randomMessage}<br><br>
-
-        Espero que la cita de ${activity}
-        sea inolvidable 💖
-    `;
-}
-
+start();
 </script>
 
 </body>
