@@ -333,11 +333,11 @@ select:focus{
 @media(max-width:600px){
 
     .container{
-        padding:240px;
+        padding:25px;
     }
 
     h1{
-        font-size:250px;
+        font-size:26px;
     }
 
     .cat{
@@ -345,7 +345,7 @@ select:focus{
     }
 
     button{
-        font-size:150px;
+        font-size:15px;
     }
 }
 
@@ -354,26 +354,17 @@ select:focus{
 
 <body>
 
-<audio id="music" loop>
-    <source src="C:\Users\waner\OneDrive\Escritorio\cel">
-</audio>
-
 <div id="floatingContainer"></div>
 
 <div class="container">
 
-    <img
-        class="cat"
-        src="C:\Users\waner\OneDrive\Escritorio"
-    >
+    <h1>
+        🌻 ¿Quieres tener una cita conmigo? 💖
+    </h1>
 
     <!-- ================= PREGUNTA ================= -->
 
     <div class="step active" id="step1">
-
-        <h1>
-            🌻 ¿Quieres tener una cita conmigo? 💖
-        </h1>
 
         <div class="buttons">
 
@@ -441,6 +432,14 @@ select:focus{
             <option>🌻 Picnic con girasoles</option>
 
         </select>
+
+        <!-- NUEVA BARRA PARA ESCRIBIR EL LUGAR -->
+
+        <input
+            type="text"
+            id="location"
+            placeholder="📍 Escribe el lugar de la cita"
+        >
 
         <button class="nextBtn" id="toStep4">
             Siguiente 💌
@@ -595,13 +594,6 @@ yesBtn.addEventListener("click",()=>{
     showStep("step2");
 
     createCelebration();
-
-    const music =
-        document.getElementById("music");
-
-    music.volume = 0.35;
-
-    music.play().catch(()=>{});
 });
 
 /* ================= CONTINUAR ================= */
@@ -635,9 +627,12 @@ toStep4.addEventListener("click",()=>{
     const activity =
         document.getElementById("activity").value;
 
-    if(activity === ""){
+    const location =
+        document.getElementById("location").value;
 
-        alert("Escoge una actividad 🌻");
+    if(activity === "" || location === ""){
+
+        alert("Completa actividad y lugar 💖");
 
         return;
     }
@@ -662,6 +657,9 @@ confirmBtn.addEventListener("click",()=>{
 
     const activity =
         document.getElementById("activity").value;
+
+    const location =
+        document.getElementById("location").value;
 
     const date =
         document.getElementById("date").value;
@@ -696,11 +694,12 @@ confirmBtn.addEventListener("click",()=>{
 
         ${person1} + ${person2} 💕<br><br>
 
-        📍 ${activity}<br>
+        💕 ${activity}<br>
+        📍 ${location}<br>
         📅 ${formattedDate}<br>
         ⏰ ${time}<br><br>
 
-        Ya quiero que llegue  ✨
+        Ya quiero que llegue ✨
     `;
 
     startCountdown(date,time);
@@ -872,11 +871,11 @@ function createLetter(person1,person2,activity){
 
     const messages = [
 
-        `🐮🐄Gracias por compartir este tu vida conmigo pichu🐮🐄 🌻`,
+        `🐮🐄Gracias por compartir tu vida conmigo🐮🐄 🌻`,
 
-        `🐮🐄Cada segundo contigo será especial te lo juro mami🐮🐄 💖`,
+        `🐮🐄Cada segundo contigo será especial🐮🐄 💖`,
 
-        `🐮🐄Prometo que se nos va a olvidar los 4 años que tenemos sin vernos🐮🐄 ✨`,
+        `🐮🐄Prometo que esta cita será inolvidable🐮🐄 ✨`,
 
         `🐮🐄No importa el lugar, contigo todo es mágico🐮🐄 🌸`
     ];
